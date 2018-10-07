@@ -73,6 +73,10 @@ class OrdersController extends Controller
         ]);
     }
 
+    /**
+     * @param $query
+     * @param $filter
+     */
     private function _applyFilter($query, $filter) {
         if (!empty($filter['service'])) {
             $query->andWhere(['self.service_id' => $filter['service']]);

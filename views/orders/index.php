@@ -3,7 +3,11 @@
 ?>
 
 <ul class="nav nav-tabs p-b">
-    <li class="<?=(empty($filters['status']) ? 'active' : '')?>"><a href="/">All orders</a></li>
+    <li class="<?=(empty($filters['status']) ? 'active' : '')?>">
+        <a href="<?=UrlHelp::generateUrl('orders/index', [], ['status', 'service', 'mode', 'per-page', 'page'])?>">
+            All orders
+        </a>
+    </li>
     <? if ($statuses) : ?>
         <? foreach ($statuses as $key => $status) : ?>
             <li class="<?=(!empty($filters['status']) && $key == $filters['status'] ? 'active' : '')?>">
