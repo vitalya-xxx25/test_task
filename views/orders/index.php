@@ -49,8 +49,8 @@
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                         <li class="<?=(empty($filters['service']) ? 'active' : '')?>"><a href="">All (<?=$totalRows?>)</a></li>
                         <? foreach ($services as $key => $service) : ?>
-                            <li class="<?=(!empty($filters['service']) && $key == $filters['service'] ? 'active' : '')?>">
-                                <a href="<?=UrlHelp::generateUrl('orders/index', ['service' => $key], ['per-page', 'page'])?>">
+                            <li class="<?=(!empty($filters['service']) && $service['id'] == $filters['service'] ? 'active' : '')?>">
+                                <a href="<?=UrlHelp::generateUrl('orders/index', ['service' => $service['id']], ['per-page', 'page'])?>">
                                     <span class="label-id"><?=$service['totalOrders']?></span>  <?=$service['name']?>
                                 </a>
                             </li>
@@ -94,7 +94,7 @@
                         <span class="label-id"><?=$order->services['totalOrders']?></span> <?=$order->services['name']?>
                     </td>
                     <td><?=$order->statusName?></td>
-                    <td><td><?=$order->modeName?></td></td>
+                    <td><?=$order->modeName?></td>
                     <td><span class="nowrap"><?=$order->dateCreate?></span><span class="nowrap"><?=$order->timeCreate?></span></td>
                 </tr>
             <? endforeach; ?>
