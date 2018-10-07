@@ -1,10 +1,16 @@
+<?php
+    use app\helpers\UrlHelp;
+?>
+
 <ul class="nav nav-tabs p-b">
-    <li class="active"><a href="#">All orders</a></li>
-    <li><a href="#">Pending</a></li>
-    <li><a href="#">In progress</a></li>
-    <li><a href="#">Completed</a></li>
-    <li><a href="#">Canceled</a></li>
-    <li><a href="#">Error</a></li>
+    <li class="<?=(empty($filters['status']) ? 'active' : '')?>"><a href="/">All orders</a></li>
+    <? if ($statuses) : ?>
+        <? foreach ($statuses as $key => $status) : ?>
+            <li class="<?=(!empty($filters['status']) && $key == $filters['status'] ? 'active' : '')?>">
+                <a href="<?=UrlHelp::generateUrl('orders/index', ['status' => $key], ['service', 'mode', 'per-page', 'page'])?>"><?=$status?></a>
+            </li>
+        <? endforeach; ?>
+    <? endif; ?>
     <li class="pull-right custom-search">
         <form class="form-inline" action="/admin/orders" method="get">
             <div class="input-group">
@@ -35,16 +41,18 @@
                     Service
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li class="active"><a href="">All (894931)</a></li>
-                    <li><a href=""><span class="label-id">214</span>  Real Views</a></li>
-                    <li><a href=""><span class="label-id">215</span> Page Likes</a></li>
-                    <li><a href=""><span class="label-id">10</span> Page Likes</a></li>
-                    <li><a href=""><span class="label-id">217</span> Page Likes</a></li>
-                    <li><a href=""><span class="label-id">221</span> Followers</a></li>
-                    <li><a href=""><span class="label-id">224</span> Groups Join</a></li>
-                    <li><a href=""><span class="label-id">230</span> Website Likes</a></li>
-                </ul>
+                <? if ($services) : ?>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li class="<?=(empty($filters['service']) ? 'active' : '')?>"><a href="">All (<?=$totalRows?>)</a></li>
+                        <? foreach ($services as $key => $service) : ?>
+                            <li class="<?=(!empty($filters['service']) && $key == $filters['service'] ? 'active' : '')?>">
+                                <a href="<?=UrlHelp::generateUrl('orders/index', ['service' => $key], ['per-page', 'page'])?>">
+                                    <span class="label-id"><?=$service['totalOrders']?></span>  <?=$service['name']?>
+                                </a>
+                            </li>
+                        <? endforeach; ?>
+                    </ul>
+                <? endif; ?>
             </div>
         </th>
         <th>Status</th>
@@ -57,7 +65,11 @@
                 <? if ($modes) : ?>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                         <? foreach ($modes as $id => $mod) : ?>
-                            <li class=""><a href=""><?=$mod?></a></li>
+                            <li class="<?=(!empty($filters['mode']) && $id == $filters['mode'] ? 'active' : '')?>">
+                                <a href="<?=UrlHelp::generateUrl('orders/index', ['mode' => $id], ['per-page', 'page'])?>">
+                                    <?=$mod?>
+                                </a>
+                            </li>
                         <? endforeach; ?>
                     </ul>
                 <? endif; ?>
@@ -75,7 +87,7 @@
                     <td class="link"><?=$order->link?></td>
                     <td><?=$order->quantity?></td>
                     <td class="service">
-                        <span class="label-id"><?=$order->services['totalOrders']?></span><?=$order->services['name']?>
+                        <span class="label-id"><?=$order->services['totalOrders']?></span> <?=$order->services['name']?>
                     </td>
                     <td><?=$order->statusName?></td>
                     <td><td><?=$order->modeName?></td></td>
@@ -87,16 +99,13 @@
 </table>
 <div class="row">
     <div class="col-sm-8">
-
         <nav>
             <?= \yii\widgets\LinkPager::widget([
                 'pagination' => $paginator,
             ]); ?>
         </nav>
-
     </div>
     <div class="col-sm-4 pagination-counters">
         <?=$pageFrom?> to <?=$pageTo?> of <?=$totalRows?>
     </div>
-
 </div>
