@@ -42,10 +42,20 @@ class OrdersController extends Controller
             ],
         ]);
 
+        $paginator = $provider->getPagination();
+        $orders = $provider->getModels();
+
+        $page = (int) \Yii::$app->request->get('page');
+        $pageFrom = (1 < $page) ? $paginator->getPageSize() * $page : 1;
+        $pageTo = $pageFrom + count($orders);
+
         return $this->render('index', [
-            'orders' => $provider->getModels(),
+            'orders' => $orders,
             'modes' => Modes::getModes(),
-            'paginator' => $provider->getPagination()
+            'paginator' => $paginator,
+            'totalRows' => $provider->getTotalCount(),
+            'pageFrom' => $pageFrom,
+            'pageTo' => $pageTo,
         ]);
     }
 }
