@@ -3,11 +3,11 @@ namespace app\models\enum;
 
 use app\models\enum\Enumerator;
 
-class Modes extends Enumerator
+class SearchTypes extends Enumerator
 {
     protected static $items = [
-        0 => 'All',
-        1 => 'Manual',
-        2 => 'Auto',
+        1 => 'Order ID',
+        2 => 'Link',
+        3 => 'Username',
     ];
 }

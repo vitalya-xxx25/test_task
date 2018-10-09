@@ -12,14 +12,14 @@ class OrdersModel extends Orders
      * @return mixed|null
      */
     public function getStatusName() {
-        return Statuses::getStatusName($this->status);
+        return Statuses::getItemByKey($this->status);
     }
 
     /**
      * @return mixed|null
      */
     public function getModeName() {
-        return Modes::getModeName($this->mode);
+        return Modes::getItemByKey($this->mode);
     }
 
     /**
